@@ -6,11 +6,11 @@ from django.http import HttpResponse
 from django.http.request import HttpRequest
 from django.http import HttpRequest, HttpResponse
 
-def listar_cilindros(request):
+def listar_cilindros(request: HttpRequest) ->  HttpResponse:
     cilindros = Cilindro.objects.all()
     return render(request, 'listar_cilindros.html', {'cilindros': cilindros})
 
-def crear_cilindro(request):
+def crear_cilindro(request:HttpRequest) ->  HttpResponse:
     if request.method == 'POST':
         form = CilindroForm(request.POST)
         if form.is_valid():
@@ -20,7 +20,7 @@ def crear_cilindro(request):
         form = CilindroForm()
     return render(request, 'crear_cilindro.html', {'form': form})
 
-def editar_cilindro(request, cilindro_id):
+def editar_cilindro(request: HttpRequest, cilindro_id) ->  HttpResponse:
     cilindro = get_object_or_404(Cilindro, pk=cilindro_id)
     if request.method == 'POST':
         form = CilindroForm(request.POST, instance=cilindro)
@@ -31,7 +31,7 @@ def editar_cilindro(request, cilindro_id):
         form = CilindroForm(instance=cilindro)
     return render(request, 'editar_cilindro.html', {'form': form})
 
-def borrar_cilindro(request, cilindro_id):
+def borrar_cilindro(request: HttpRequest, cilindro_id) ->  HttpResponse:
     cilindro = get_object_or_404(Cilindro, pk=cilindro_id)
     if request.method == 'POST':
         cilindro.borrar()

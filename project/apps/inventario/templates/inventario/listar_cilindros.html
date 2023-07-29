@@ -10,7 +10,7 @@
         <li>
             Número de serie: {{ cilindro.numero_serie }} <br>
             Tipo de gas: {{ cilindro.tipo_gas }} <br>
-            Capacidad: {{ cilindro.capacidad }} litros <br>
+            Capacidad: {{ cilindro.capacidad }} CM3 <br>
             Ubicación: {{ cilindro.ubicacion.nombre }} - {{ cilindro.ubicacion.direccion }} <br>
             (<a href="{% url 'editar_cilindro' cilindro.id %}">Editar</a> |
              <a href="{% url 'borrar_cilindro' cilindro.id %}">Eliminar</a>)
