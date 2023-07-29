@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar cilindro</title>
+</head>
+<body>
+    <h1>Eliminar cilindro</h1>
+    <p>¿Estás seguro de que deseas eliminar el cilindro "{{ cilindro.numero_serie }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Eliminar</button>
+    </form>
+</body>
+</html>

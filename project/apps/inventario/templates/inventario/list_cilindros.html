@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listado de cilindros</title>
+</head>
+<body>
+    <h1>Listado de cilindros</h1>
+    <ul>
+        {% for cilindro in cilindros %}
+        <li>
+            Número de serie: {{ cilindro.numero_serie }} <br>
+            Tipo de gas: {{ cilindro.tipo_gas }} <br>
+            Capacidad: {{ cilindro.capacidad }} litros <br>
+            Ubicación: {{ cilindro.ubicacion.nombre }} - {{ cilindro.ubicacion.direccion }} <br>
+            (<a href="{% url 'edit_cilindro' cilindro.id %}">Editar</a> |
+             <a href="{% url 'delete_cilindro' cilindro.id %}">Eliminar</a>)
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_cilindro' %}">Agregar nuevo cilindro</a>
+</body>
+</html>
+
