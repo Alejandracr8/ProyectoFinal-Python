@@ -12,12 +12,12 @@
             Tipo de gas: {{ cilindro.tipo_gas }} <br>
             Capacidad: {{ cilindro.capacidad }} litros <br>
             Ubicación: {{ cilindro.ubicacion.nombre }} - {{ cilindro.ubicacion.direccion }} <br>
-            (<a href="{% url 'edit_cilindro' cilindro.id %}">Editar</a> |
-             <a href="{% url 'delete_cilindro' cilindro.id %}">Eliminar</a>)
+            (<a href="{% url 'editar_cilindro' cilindro.id %}">Editar</a> |
+             <a href="{% url 'borrar_cilindro' cilindro.id %}">Eliminar</a>)
         </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'create_cilindro' %}">Agregar nuevo cilindro</a>
+    <a href="{% url 'crear_cilindro' %}">Agregar nuevo cilindro</a>
 </body>
 </html>
 
