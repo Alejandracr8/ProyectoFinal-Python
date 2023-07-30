@@ -1,39 +1,74 @@
 from datetime import date
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import Cilindro
 from .forms import CilindroForm
 from django.http import HttpResponse
 from django.http.request import HttpRequest
 from django.http import HttpRequest, HttpResponse
+from typing import Any
 
-def listar_cilindros(request: HttpRequest) ->  HttpResponse:
-    cilindros = Cilindro.objects.all()
-    return render(request, 'listar_cilindros.html', {'cilindros': cilindros})
+from django.contrib.auth.decorators import login_required
 
-def crear_cilindro(request:HttpRequest) ->  HttpResponse:
-    if request.method == 'POST':
-        form = CilindroForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_cilindros')
-    else:
-        form = CilindroForm()
-    return render(request, 'crear_cilindro.html', {'form': form})
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    UpdateView,
+)
 
-def editar_cilindro(request: HttpRequest, cilindro_id) ->  HttpResponse:
-    cilindro = get_object_or_404(Cilindro, pk=cilindro_id)
-    if request.method == 'POST':
-        form = CilindroForm(request.POST, instance=cilindro)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_cilindros')
-    else:
-        form = CilindroForm(instance=cilindro)
-    return render(request, 'editar_cilindro.html', {'form': form})
+from . import forms, models
 
-def borrar_cilindro(request: HttpRequest, cilindro_id) ->  HttpResponse:
-    cilindro = get_object_or_404(Cilindro, pk=cilindro_id)
-    if request.method == 'POST':
-        cilindro.borrar()
-        return redirect('listar_cilindros')
-    return render(request, 'borrar_cilindro.html', {'cilindro': cilindro})
+
+@login_required
+def index(request):
+    return render(request, "inventario/index.html")
+
+
+class listar_cilindros(ListView):
+    model = models.Cilindro
+
+class crear_cilindro(CreateView):
+    model = models.Cilindro
+    form_class = forms.CilindroForm
+    success_url = reverse_lazy("cilindro:listar_cilindro")
+
+class borrar_cilindro(DeleteView):
+    model = models.Cilindro
+    success_url = reverse_lazy("cilindro:listar_cilindro")
+
+class editar_cilindro(UpdateView):
+    model = models.Cilindro
+    form_class = forms.CilindroForm
+    success_url = reverse_lazy("cilindro:listar_cilindro")
+
+
+
+class listar_ubicacion(ListView):
+    model = models.Ubicacion
+
+    def get_queryset(self) -> QuerySet[Any]:
+        if self.request.GET.get("consulta"):
+            consulta = self.request.GET.get("consulta")
+            object_list = models.Ubicacion.objects.filter(nombre__icontains=consulta)
+        else:
+            object_list = models.Ubicacion.objects.all()
+        return object_list
+
+
+class crear_ubicacion(CreateView):
+    model = models.Ubicacion
+    form_class = forms.UbicacionForm
+    success_url = reverse_lazy("cilindro:listar_ubicacion")
+
+class editar_ubicacion(UpdateView):
+    model = models.Ubicacion
+    form_class = forms.UbicacionForm
+    success_url = reverse_lazy("producto:producto_list")
+
+
+class borrar_ubicacion(DeleteView):
+    model = models.Ubicacion
+    success_url = reverse_lazy("cilindro:listar_uboicacion")
